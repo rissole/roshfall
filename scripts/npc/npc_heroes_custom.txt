@@ -1,0 +1,10 @@
+"DOTAHeroes"
+{
+	"Version"	"1"
+	
+	"npc_roshfall_hero_abaddon"
+	{
+		"override_hero"	"npc_dota_hero_abaddon"
+		"Ability1"		"roshfall_summon_mech"
+	}
+}

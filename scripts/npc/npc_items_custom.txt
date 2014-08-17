@@ -1,0 +1,133 @@
+"DOTAAbilities"
+{
+	"item_roshfall_summoned_mech"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL"
+		"Model"							"models/creeps/roshan/roshan.mdl"
+		"BaseClass"                     "item_datadriven"
+		
+		// Sound
+		//-------------------------------------------------------------------------------------------------------------			
+		"UIPickupSound"					"Item.PickUpGemShop"
+		"UIDropSound"					"Item.DropGemShop"
+		"WorldDropSound"				"Item.DropGemWorld"
+		
+		// Stats
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"350"
+		"AbilityCastPoint"				"0.0"
+		
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"0.0"
+
+
+		// Item Info
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCost"						"0"
+		"ItemShopTags"					"consumable"
+		"ItemQuality"					"consumable"
+		"ItemStackable"					"1"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE_STACKING"
+		"ItemPermanent"					"0"
+		"ItemInitialCharges"			"1"
+		"ItemPurchasable"				"0"
+		"ItemKillable"					"0"
+		"ItemDroppable"					"0"
+		"ItemSellable"					"0"
+		"ItemCastOnPickup"				"1"
+		
+		"OnSpellStart"
+		{
+			"SpendCharge" {}
+			"SpawnUnit"
+			{
+				"UnitName"	"npc_roshfall_mech"
+				"Target" "CASTER"
+				"Duration"	"%mech_duration"
+				"UnitCount"		"1"
+				"OnSpawn"
+				{
+					"ApplyModifier"
+					{
+						"Target" "TARGET"
+						"ModifierName" "modifier_roshfall_relocate_owner"
+					}
+				}
+			}
+			
+			"ApplyModifier"
+			{
+				"Target" "CASTER"
+				"ModifierName" "modifier_roshfall_banish"
+			}
+		}
+		
+		"Modifiers"
+		{
+			// This is perhaps the greatest hack of all time, but I don't know any better way
+			// to do a Primal Split-like temporary hero removal. If you have a better idea
+			// or some actual documentation on this crazy "engine" I'd love to have a glance
+			"modifier_roshfall_banish"
+			{
+				"Duration" "%banish_duration"
+				"IsHidden" "1"
+				"OnCreated"
+				{
+					"RunScript"
+					{
+						"ScriptFile" "scripts/vscripts/mech_abilities.lua"
+						"Function" "start_banish"
+					}
+				}
+				"States"
+				{
+					"MODIFIER_STATE_OUT_OF_GAME" "MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_UNSELECTABLE" "MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_STUNNED" "MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_ATTACK_IMMUNE" "MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_NOT_ON_MINIMAP" "MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_NO_UNIT_COLLISION" "MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_PASSIVES_DISABLED" "MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_COMMAND_RESTRICTED" "MODIFIER_STATE_VALUE_ENABLED"
+				}
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_BONUS_DAY_VISION" "-6000"
+					"MODIFIER_PROPERTY_BONUS_NIGHT_VISION" "-6000"
+				}
+			}
+			
+			"modifier_roshfall_relocate_owner"
+			{
+				"Duration" "%mech_duration"
+				"IsHidden" "1"
+				"OnDestroy"
+				{
+					"RunScript"
+					{
+						"ScriptFile" "scripts/vscripts/mech_abilities.lua"
+						"Function" "relocateOwner"
+					}
+				}
+			}
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type" "FIELD_FLOAT"
+				"mech_duration" "5"
+			}
+			
+			"02"
+			{
+				"var_type" "FIELD_FLOAT"
+				"banish_duration" "5.1"
+			}
+		}
+	}
+}

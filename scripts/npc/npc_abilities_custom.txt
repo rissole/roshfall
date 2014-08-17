@@ -1,0 +1,43 @@
+"DOTAAbilities"
+{
+	"Version"		"1"
+	
+	roshfall_summon_mech
+	{
+		"AbilityName"					"summon_mech"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"BaseClass" 					"ability_datadriven"
+		"AbilityTextureName"			"roshan_slam"
+		"MaxLevel"						"1"
+		"AOERadius"						"%radius"
+		
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"1000"
+		"AbilityCastPoint"				"0.3"
+		
+		// Damage.
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityDamage" "0"
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"radius"					"300"
+			}
+		}
+		
+		"OnSpellStart"
+		{
+			"RunScript"
+			{
+				"ScriptFile" "scripts/vscripts/mech_abilities.lua"
+				"Function" "summonMech"
+				"Target" "POINT"
+			}
+		}
+	}
+}
