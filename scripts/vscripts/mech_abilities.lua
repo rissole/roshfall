@@ -4,7 +4,7 @@ function summonMech(keys)
 	CreateItemOnPositionSync(point, CreateItem("item_roshfall_summoned_mech", caster, caster))
 end
 
-function start_banish(keys)
+function startBanish(keys)
 	local caster = keys.caster
 	caster:SetOrigin(Vector(0,0,-512))
 end

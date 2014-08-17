@@ -79,7 +79,7 @@
 					"RunScript"
 					{
 						"ScriptFile" "scripts/vscripts/mech_abilities.lua"
-						"Function" "start_banish"
+						"Function" "startBanish"
 					}
 				}
 				"States"
