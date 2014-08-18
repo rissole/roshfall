@@ -17,4 +17,5 @@ http://gfycat.com/TintedAgreeableBedbug
 
  - [Dota 2 Modding Subreddit](http://reddit.com/r/Dota2Modding)
  - [Dota 2 Workshop Tools on VDC](https://developer.valvesoftware.com/wiki/Dota_2_Workshop_Tools)
+ - [Various useful lists](http://hex6.se/dota/)
  - IRC!	irc.gamesurge.net:6667 #dota2modhelpdesk
