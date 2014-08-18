@@ -15,7 +15,7 @@ function CanEnterMech(user, owner)
 			return false
 		end
 	
-		-- mode 1: team mates can control, but this user is not a teammate
+		-- mode 1: teammates can control, but this user is not a teammate
 		if (steal_mode == 1 and owner:GetTeam() ~= user:GetTeam()) then
 			return false
 		end
@@ -44,7 +44,7 @@ end
 -- but that doesn't work for particles/effects like Abaddon's glowing bits.
 function StartBanish(keys)
 	local caster = keys.caster
-	caster:SetAbsOrigin(Vector(-8000,-8000,0))
+	caster:SetAbsOrigin(Vector(-8000, -8000, 0))
 end
 
 -- Attempt to enter the mech
@@ -55,12 +55,15 @@ function EnterMech(keys)
 
 	if (not CanEnterMech(user, owner)) then
 		-- If can't enter mech, we have to recreate the item exactly as we found it.
-		Roshfall:SetMechInfo(owner, nil)
 		local point = Roshfall:GetMechInfo(owner).item:GetAbsOrigin()
+		Roshfall:SetMechInfo(owner, nil)
 		SummonMechItem({caster=owner, target_points={point}, skip_animation=true})
 	else
-		print(user:GetName() .. ' entered their mech.')
+		local point = Roshfall:GetMechInfo(owner).item:GetAbsOrigin()
 		Roshfall:SetMechInfo(owner, nil)
+		local mech = CreateUnitByName("npc_roshfall_mech", point, true, user, user, user:GetTeam())
+		mech:SetControllableByPlayer(user:GetPlayerID(), true)
+		item:ApplyDataDrivenModifier(user, mech, "modifier_roshfall_mech_control", {})
 	end
 end
 
@@ -76,10 +79,14 @@ end
 
 -- This is called when the Mech dies/expires.
 function EndMechControl(keys)
-	GameRules:GetGameModeEntity():SetOverrideSelectionEntity(nil)
 	local target = keys.target
-	target:GetOwner():SetAbsOrigin(target:GetAbsOrigin())
+	local user = target:GetOwner()
+	GameRules:GetGameModeEntity():SetOverrideSelectionEntity(nil)
+	user:SetAbsOrigin(target:GetAbsOrigin())
 	local angles = target:GetAngles()
-	target:GetOwner():SetAngles(angles.x, angles.y, angles.z)
-	target:GetOwner():RemoveModifierByName("modifier_roshfall_banish")
+	user:SetAngles(angles.x, angles.y, angles.z)
+	user:RemoveModifierByName("modifier_roshfall_banish")
+	if (target:IsAlive()) then
+		target:ForceKill(false)
+	end
 end

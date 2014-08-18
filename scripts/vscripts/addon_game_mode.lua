@@ -3,6 +3,7 @@ if (CRoshfallGameMode == nil) then
 end
 
 function Precache(context)
+	PrecacheUnitByNameSync("npc_roshfall_mech", context)
 end
 
 -- Create the game mode when we activate
