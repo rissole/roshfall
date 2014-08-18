@@ -1,5 +1,7 @@
 "DOTAAbilities"
 {
+	// This is the Mech that appears in the world, and can be right clicked to enter into
+	// Implemented as an item lol
 	"item_roshfall_summoned_mech"
 	{
 		// General
@@ -37,31 +39,16 @@
 		"ItemKillable"					"0"
 		"ItemDroppable"					"0"
 		"ItemSellable"					"0"
+		// This is the key thing that means OnSpellStart is triggered when you pick the item up
 		"ItemCastOnPickup"				"1"
 		
 		"OnSpellStart"
 		{
 			"SpendCharge" {}
-			"SpawnUnit"
+			"RunScript"
 			{
-				"UnitName"	"npc_roshfall_mech"
-				"Target" "CASTER"
-				"Duration"	"%mech_duration"
-				"UnitCount"		"1"
-				"OnSpawn"
-				{
-					"ApplyModifier"
-					{
-						"Target" "TARGET"
-						"ModifierName" "modifier_roshfall_relocate_owner"
-					}
-				}
-			}
-			
-			"ApplyModifier"
-			{
-				"Target" "CASTER"
-				"ModifierName" "modifier_roshfall_banish"
+				"ScriptFile" "scripts/vscripts/mech_abilities.lua"
+				"Function" "EnterMech"
 			}
 		}
 		
@@ -70,16 +57,16 @@
 			// This is perhaps the greatest hack of all time, but I don't know any better way
 			// to do a Primal Split-like temporary hero removal. If you have a better idea
 			// or some actual documentation on this crazy "engine" I'd love to have a glance
+			// This is applied by StartMechControl
 			"modifier_roshfall_banish"
 			{
-				"Duration" "%banish_duration"
 				"IsHidden" "1"
 				"OnCreated"
 				{
 					"RunScript"
 					{
 						"ScriptFile" "scripts/vscripts/mech_abilities.lua"
-						"Function" "startBanish"
+						"Function" "StartBanish"
 					}
 				}
 				"States"
@@ -100,16 +87,25 @@
 				}
 			}
 			
-			"modifier_roshfall_relocate_owner"
+			// Modifier on the Mech that handles player control
+			"modifier_roshfall_mech_control"
 			{
 				"Duration" "%mech_duration"
 				"IsHidden" "1"
+				"OnCreated"
+				{
+					"RunScript"
+					{
+						"ScriptFile" "scripts/vscripts/mech_abilities.lua"
+						"Function" "StartMechControl"
+					}
+				}
 				"OnDestroy"
 				{
 					"RunScript"
 					{
 						"ScriptFile" "scripts/vscripts/mech_abilities.lua"
-						"Function" "relocateOwner"
+						"Function" "EndMechControl"
 					}
 				}
 			}
@@ -121,12 +117,6 @@
 			{
 				"var_type" "FIELD_FLOAT"
 				"mech_duration" "5"
-			}
-			
-			"02"
-			{
-				"var_type" "FIELD_FLOAT"
-				"banish_duration" "5.1"
 			}
 		}
 	}

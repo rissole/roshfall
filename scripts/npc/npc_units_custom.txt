@@ -3,6 +3,7 @@
 {
 	"Version"	"1"
 	
+	// This is the actual summoned Mech unit that the player controls
 	"npc_roshfall_mech"
 	{										
 		// General
