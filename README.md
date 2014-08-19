@@ -11,7 +11,8 @@ A Dota 2 mod - Titanfall meets Dota 2. Made using Workshop Tools Alpha.
 
 ## Current progress
 
-http://gfycat.com/TintedAgreeableBedbug
+[http://gfycat.com/TintedAgreeableBedbug](Basic summoning and control)
+[http://gfycat.com/DiscreteKeyGrayreefshark](Better control and disallow other units from taking mech)
 
 ## Dota 2 Modding
 
