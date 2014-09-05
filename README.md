@@ -13,6 +13,7 @@ A Dota 2 mod - Titanfall meets Dota 2. Made using Workshop Tools Alpha.
 
 - [Basic summoning and control](http://gfycat.com/TintedAgreeableBedbug)
 - [Better control and disallow other units from taking mech](http://gfycat.com/DiscreteKeyGrayreefshark)
+- [Mech texturing. I think I'm going to get the final model/texture made by someone else since I suck at it](http://i.imgur.com/o6h3bnD.png)
 
 ## Dota 2 Modding
 
