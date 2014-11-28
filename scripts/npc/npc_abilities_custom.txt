@@ -30,13 +30,13 @@
 			}
 		}
 		
-		// Create the Mech "item" that the player can interact with to control
+		// Begin spawning the Mech that the player can interact with to control
 		"OnSpellStart"
 		{
 			"RunScript"
 			{
 				"ScriptFile" "scripts/vscripts/mech_abilities.lua"
-				"Function" "SummonMechItem"
+				"Function" "StartSummonMech"
 				"Target" "POINT"
 			}
 		}

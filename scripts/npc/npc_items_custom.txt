@@ -7,7 +7,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL"
-		"Model"							"models/creeps/roshan/roshan.mdl"
+		"Model"							"models/mech/roshan_mech.vmdl"
 		"BaseClass"                     "item_datadriven"
 		
 		// Sound
@@ -120,4 +120,62 @@
 			}
 		}
 	}
+    
+    "item_roshfall_mech_summoning_modifier"
+    {
+        "AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+        "BaseClass"					"item_datadriven"
+        "Modifiers"
+        {
+            "modifier_roshfall_mech_spawning"
+            {
+                "Duration" "%spawn_duration"
+                "IsHidden" "1"
+                "OverrideAnimation" "ACT_DOTA_INTRO"
+                "OnDestroy"
+                {
+                    "RunScript"
+                    {
+                        "ScriptFile" "scripts/vscripts/mech_abilities.lua"
+                        "Function" "EndSummonMech"
+                    }
+                }
+                "States"
+                {
+                    "MODIFIER_STATE_NO_HEALTH_BAR" "MODIFIER_STATE_VALUE_ENABLED"
+                    "MODIFIER_STATE_OUT_OF_GAME" "MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_UNSELECTABLE" "MODIFIER_STATE_VALUE_ENABLED"
+                    "MODIFIER_STATE_ATTACK_IMMUNE" "MODIFIER_STATE_VALUE_ENABLED"
+                }
+            }
+            "modifier_roshfall_mech_falling"
+            {
+                "Duration" "%fall_duration"
+                "IsHidden" "1"
+                "OnDestroy"
+                {
+                    "RunScript"
+                    {
+                        "ScriptFile" "scripts/vscripts/mech_abilities.lua"
+                        "Function" "SummonImpactGround"
+                    }
+                }
+            }
+        }
+        
+        "AbilitySpecial"
+        {
+            "01"
+            {
+                "var_type" "FIELD_FLOAT"
+                "spawn_duration" "3"
+            }
+            
+            "02"
+            {
+                "var_type" "FIELD_FLOAT"
+                "fall_duration" "2"
+            }
+        }
+    }
 }
