@@ -15,6 +15,8 @@ end
 function CRoshfallGameMode:InitGameMode()
 	Convars:RegisterConvar("roshfall_mech_nonhero_control", "0", "Can non-hero units control mechs?", FCVAR_CHEAT)
 	Convars:RegisterConvar("roshfall_mech_steal_mode", "0", "Who can take summoned mechs: 0 - player only, 1 - team mates, 2 - anyone", FCVAR_CHEAT)
+	Convars:RegisterCommand("@@", do_lua_cmd, "do some lua", 0)
+	Convars:RegisterCommand("@", do_lua_cmd, "print some lua value", 0)
 	self.mech_info = {}
 	print("We have Roshfall.")
 end
@@ -38,4 +40,33 @@ function CRoshfallGameMode:FindOwnerForItemAbility(ability)
 		end
 	end
 	return nil
+end
+
+function do_lua_cmd(name, ...)
+	local length = select("#", ...)
+	if (length == 0) then
+		return
+	end
+	execute_string = select(1, ...)
+	for i=2, length do
+		execute_string = execute_string .. " " .. select(i, ...)
+	end
+
+	env = {
+		PLR = Convars:GetDOTACommandClient(),
+		HERO = Convars:GetDOTACommandClient():GetAssignedHero()
+	}
+	setmetatable(env, {__index = _G})
+	
+	if (name == "@") then
+		execute_string = "return " .. execute_string
+	end
+	
+	f = loadstring(execute_string)
+	setfenv(f, env)
+	local ret = f()
+	
+	if (name == "@") then
+		print(ret)
+	end
 end

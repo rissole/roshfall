@@ -24,8 +24,9 @@ function CanEnterMech(user, owner)
 	return true
 end
 
--- Place the Summoned Mech (item) into the world (point target ability)
-function SummonMechItem(keys)
+-- Place the Summoned Mech (unit to animate, then item) into the world
+-- This is a point target ability
+function StartSummonMech(keys)
 	local caster = keys.caster
 	if (Roshfall:GetMechInfo(caster) ~= nil) then
 		-- Player already has a mech
@@ -33,11 +34,31 @@ function SummonMechItem(keys)
 		return
 	end
 	local point = keys.target_points[1]
-	local item = CreateItemOnPositionSync(point, CreateItem("item_roshfall_summoned_mech", caster, caster))
-	if (not keys.skip_animation) then
-		-- TODO do entrance animation
-	end
-	Roshfall:SetMechInfo(caster, {item=item})
+    -- Spawn animation entity which will summon item
+    local mech = CreateUnitByName("npc_roshfall_mech_spawning", point, true, nil, nil, caster:GetTeam())
+    -- To apply data driven modifiers to units from scripts you have to make an item. lol
+    local summoning_modifier = CreateItem("item_roshfall_mech_summoning_modifier", nil, nil)
+    summoning_modifier:ApplyDataDrivenModifier(caster, mech, "modifier_roshfall_mech_spawning", {})
+    summoning_modifier:ApplyDataDrivenModifier(caster, mech, "modifier_roshfall_mech_falling", {})
+end
+
+-- Called once the mech summon animation is complete
+function EndSummonMech(keys)
+    local owner = keys.caster
+    local point = keys.target:GetAbsOrigin()
+    keys.target:ForceKill(false)
+    SummonMechItem(owner, point)
+end
+
+-- Create the item that can be used by the owner
+function SummonMechItem(owner, point)
+    local item = CreateItemOnPositionSync(point, CreateItem("item_roshfall_summoned_mech", owner, owner))
+    Roshfall:SetMechInfo(owner, {item=item})
+end
+
+-- This event fires when the Mech impacts the ground (during the summon animation)
+function SummonImpactGround(keys)
+    print("BOOM")
 end
 
 -- Hack to make hero invisible. Yes I know SetNoDraw exists
@@ -57,7 +78,7 @@ function EnterMech(keys)
 		-- If can't enter mech, we have to recreate the item exactly as we found it.
 		local point = Roshfall:GetMechInfo(owner).item:GetAbsOrigin()
 		Roshfall:SetMechInfo(owner, nil)
-		SummonMechItem({caster=owner, target_points={point}, skip_animation=true})
+		SummonMechItem(owner, point)
 	else
 		local point = Roshfall:GetMechInfo(owner).item:GetAbsOrigin()
 		Roshfall:SetMechInfo(owner, nil)

@@ -8,7 +8,7 @@
 	{										
 		// General
 		//----------------------------------------------------------------
-		"Model"						"models/creeps/roshan/roshan.mdl"	// Model.
+		"Model"						"models/mech/roshan_mech.vmdl"	// Model.
 		"BaseClass"					"npc_dota_brewmaster_earth"
 		
 		"SoundSet"					"Roshan"			// Name of sound set.
@@ -54,7 +54,7 @@
 		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
 		"MovementSpeed"				"522"		// Speed.
 
-		"BoundsHullName"			"DOTA_HULL_SIZE_SMALL"			// Hull type used for navigation/locomotion.
+		"BoundsHullName"			"DOTA_HULL_SIZE_HERO"			// Hull type used for navigation/locomotion.
 
 		// Status
 		//----------------------------------------------------------------
@@ -75,4 +75,13 @@
 		"CombatClassDefend"			"DOTA_COMBAT_CLASS_DEFEND_STRONG"
 		"UnitRelationshipClass"		"DOTA_NPC_UNIT_RELATIONSHIP_TYPE_DEFAULT"
 	}
+    
+    "npc_roshfall_mech_spawning"
+	{										
+		// General
+		//----------------------------------------------------------------
+		"Model"						"models/mech/roshan_mech.vmdl"	// Model.
+        "BaseClass"                 "npc_dota_brewmaster_earth"
+        "AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+    }
 }
